@@ -1,0 +1,48 @@
+import React  from "react";
+import firebase from "firebase";
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+
+firebase.initializeApp({
+  apiKey:"AIzaSyA5_ea5t6AQzMWA9NylpT4kBos4hOT1QA0",
+  apiDomain:"piston-ea6be.firebaseapp.com "
+})
+
+ class sociallink extends React.Component{
+  state={isSignedIn:false};
+
+  uiConfig={
+    signInFlow:"popup",
+    signInOptions:[
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+    firebase.auth.GithubAuthProvider.PROVIDER_ID,
+    firebase.auth.EmailAuthProvider.PROVIDER_ID
+    ],
+    callbacks:{
+      signInSuccess:()=> false
+    }
+  }
+  componentDidMount=()=>{
+ 
+    firebase.auth().onAuthStateChanged(user=>{this.setState({isSignedIn:!!user})})
+  }
+  render(){
+    return(
+      <div>
+{this.state.isSignedIn?
+(
+<div>Sign in</div>
+):
+(
+<StyledFirebaseAuth uiConfig={this.uiConfig}
+firebaseAuth={firebase.auth()}/>
+)}
+
+
+
+      </div>
+    )
+  }
+}
+export default sociallink; 
+
